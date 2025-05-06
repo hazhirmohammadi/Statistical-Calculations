@@ -19,16 +19,16 @@ export function variance(data: Data, population = true): number {
     return data.reduce((sum, x) => sum + (x - μ) ** 2, 0) / denom;
 }
 
-export function mode(data: Data): number[] {
-    const freq = new Map<number, number>();
-    data.forEach(x => freq.set(x, (freq.get(x) || 0) + 1));
-    let maxCount = 0;
-    freq.forEach(count => { if (count > maxCount) maxCount = count; });
-    const modes = Array.from(freq.entries())
-        .filter(([_, count]) => count === maxCount)
-        .map(([value]) => value);
-    return modes;
-}
+// export function mode(data: Data): number[] {
+//     const freq = new Map<number, number>();
+//     data.forEach(x => freq.set(x, (freq.get(x) || 0) + 1));
+//     let maxCount = 0;
+//     freq.forEach(count => { if (count > maxCount) maxCount = count; });
+//     const modes = Array.from(freq.entries())
+//         .filter(([i, count]) => count === maxCount)
+//         .map(([value]) => value);
+//     return modes;
+// }
 
 
 export function stdDev(data: Data, population = true): number {
@@ -43,7 +43,7 @@ function quartiles(data: Data): { q1: number; q3: number } {
     const upper = sorted.slice(Math.ceil(mid));
     const q1 = median(lower);
     const q3 = median(upper);
-    return { q1, q3 };
+    return {q1, q3};
 }
 
 export function median(data: Data): number {
@@ -56,7 +56,7 @@ export function median(data: Data): number {
 
 export function semiInterquartileRange(data: Data): number {
     if (data.length < 2) return 0;
-    const { q1, q3 } = quartiles(data);
+    const {q1, q3} = quartiles(data);
     return (q3 - q1) / 2;
 }
 
@@ -88,5 +88,5 @@ export function getQuartiles(data: number[]) {
     const Q2 = getQuartile(sorted, 0.5);
     const Q3 = getQuartile(sorted, 0.75);
 
-    return { Q1, Q2, Q3 };
+    return {Q1, Q2, Q3};
 }

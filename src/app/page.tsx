@@ -3,14 +3,22 @@ import {useState, ChangeEvent, FormEvent} from 'react';
 import {Mean} from "@/lib/mean";
 import {Range} from "@/lib/range";
 import {sampleVariance, Variance} from "@/lib/variance";
-import {frequency} from "@/lib/frequency";
 import {Mode} from "@/lib/mode";
 import {quartiles} from "@/lib/interquartileRange";
+
+interface Results {
+    mean: number;
+    range: number;
+    variancePopulation: number;
+    varianceSample: number;
+    mode: number | number[];
+    quartiles: Record<string, number>;
+}
 
 export default function Home() {
     const [input, setInput] = useState('');
     const [data, setData] = useState<number[]>([]);
-    const [results, setResults] = useState<Record<string, any>>({});
+    const [results, setResults] = useState<Partial<Results>>({});
 
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setInput(e.target.value);
@@ -63,17 +71,17 @@ export default function Home() {
                 <section className="  border p-2 rounded-2xl bg-neutral-800 shadow-2xl shadow-gray-900  ">
                     <h2 className="text-xl font-semibold mb-2">نتایج:</h2>
                     <ul className="list-disc list-inside font-bold *:mb-2   ">
-                        <li>میانگین: {results.mean.toFixed(3)}</li>
-                        <li>دامنه تغییرات: {Math.round(results.range)}</li>
-                        <li>واریانس (جامعه): {results.variancePopulation.toFixed(1)}</li>
-                        <li>واریانس (نمونه): {results.varianceSample.toFixed(3)}</li>
+                        <li>میانگین: {results?.mean?.toFixed(3)}</li>
+                        <li>دامنه تغییرات: {results?.range && Math.round(results.range)}</li>
+                        <li>واریانس (جامعه): {results?.variancePopulation?.toFixed(1)}</li>
+                        <li>واریانس (نمونه): {results?.varianceSample?.toFixed(3)}</li>
                         <li>
                             مُد: {Array.isArray(results.mode) ? results.mode.join(', ') : results.mode}
                             {/*مُد: { results}*/}
                         </li>
-                        <li>چارک اول: {results.quartiles.Q1}</li>
-                        <li>چارک دوم: {results.quartiles.Q2}</li>
-                        <li>چارک سوم: {results.quartiles.Q3}</li>
+                        <li>چارک اول: {results?.quartiles?.Q1}</li>
+                        <li>چارک دوم: {results?.quartiles?.Q2}</li>
+                        <li>چارک سوم: {results?.quartiles?.Q3}</li>
                         {/*<li>انحراف معیار (جامعه): {results.stdDevPopulation.toFixed(4)}</li>*/}
                         {/*<li>انحراف معیار (نمونه): {results.stdDevSample.toFixed(4)}</li>*/}
                         {/*<li>انحراف چارکی (نیم‌گستره): {results.semiIQR.toFixed(4)}</li>*/}
